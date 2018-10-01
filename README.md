@@ -41,4 +41,5 @@ The **cra-app** example create react app can now consume the libraries component
 
 ## Notes
 This pattern is still in early stages and just meant as an example on how to handle create react app in a monorepo setup. Feel free to comment suggestions.
+
 Origin Issue: https://github.com/facebook/create-react-app/issues/5100#issuecomment-425395156
