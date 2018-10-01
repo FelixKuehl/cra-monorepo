@@ -1,0 +1,37 @@
+@mixin base-button($color) {
+  background-color: $color;
+  border: solid 1px $color;
+  border-radius: 2px;
+  padding: 10px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover,
+  &:active,
+  &:visited,
+  &:focus {
+    outline: none;
+  }
+}
+
+@mixin flat-button($color) {
+  @include base-button($color);
+
+  &:hover {
+    background-color: darken($color, 10%);
+    border: solid 1px darken($color, 10%);
+  }
+
+  &:active {
+    background-color: lighten($color, 10%);
+    border: solid 1px lighten($color, 10%);
+  }
+}
+
+.basicButton {
+  @include flat-button(blue);
+}

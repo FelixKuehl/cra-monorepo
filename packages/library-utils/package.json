@@ -1,0 +1,33 @@
+{
+  "name": "library-utils",
+  "version": "1.0.0",
+  "description": "A library providing basic scripts and configuration for integration with apps, that are bootsraped with create react app",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": [
+    "css",
+    "es",
+    "lib",
+    "umd",
+    "bin"
+  ],
+  "bin": {
+    "library-utils": "./bin/index.js"
+  },
+  "scripts": {},
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "nodemon": "^1.18.4"
+  },
+  "peerDependencies": {
+    "css-loader": "1.x",
+    "nwb": "0.x",
+    "react": "16.x",
+    "sass-loader": "7.x",
+    "style-loader": "0.x"
+  },
+  "author": "",
+  "homepage": "",
+  "license": "MIT",
+  "repository": ""
+}
