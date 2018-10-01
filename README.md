@@ -3,6 +3,7 @@ This example repository demonstrates how to use create react app 2.x in a monore
 
 ## What do we do?
 ### Libraries 
+#### Compiling
 Libraries are bootstraped and transpiled using `nwb` and can be developed using `storybook`. The package `library-utils` in this monorepo provide some basic configurations to make nwb and storybook work with create react app, CSS Modules, SASS, etc.
 A basic nwb configuration can be found at `library-utils/config/nwb.js`. So within a library in the monorepo just set your *nwb.config.js* to 
 ```js 
@@ -19,6 +20,9 @@ E.g.
 ```
 See example library in this repo for example.
 
+When having multiple libraries in the monorepo you can now simply run `lerna exec -- yarn run build:watch` to start a single terminal application that watches all the packages that have this script in their package.json.
+
+#### Stotybook
 A basic webpack configuration for **Storybook**, working with CSS Modules, SASS, Fonts and Files (ES import and SASS/CSS @import) is also provided at `library-utils/config/storybook/webpack.config.js` so just set your **.storybook/webpack.config.js** to 
 ```js
 const config = require('library-utils/config/storybook/webpack.config.js')
