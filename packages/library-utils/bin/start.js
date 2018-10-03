@@ -1,40 +1,27 @@
 'use strict'
-const {spawn} = require('child_process')
-const {clearConsole} = require('./utils.js')
+const {execFile} = require('child_process')
+const {clearConsole, printDevServerInfo} = require('./utils.js')
 const chalk = require('chalk')
+const dirCommand = require('@babel/cli/lib/babel/dir.js').default
+const parseArgv = require('@babel/cli/lib/babel/options.js').default
+const path = require('path')
 
-function spawnStorybook(port) {
-  const cp = spawn('start-storybook', ['-p', port, '-c', '.storybook'])
+function spawnStyleguide(port) {
+  const cp = execFile(
+    require.resolve('react-styleguidist/bin/styleguidist.js'),
+    ['server']
+  )
+  cp.stdout.on('data', function(data) {
+    console.log(data.toString())
+  })
   return cp
 }
 
 /**
- * Starts the storybook dev server
+ * Starts the styleguide dev server
  */
-function startStorybook(port) {
-  var app = spawnStorybook(port)
-}
-
-function spawnNodemon() {
-  const cp = spawn(
-    'nodemon',
-    // $ nodemon -e '*' -w src -x 'rm .babelrc &> /dev/null; nwb build-react-component --no-demo --copy-files'
-    [
-      '--watch',
-      'src',
-      '-x',
-      'rm .babelrc &> /dev/null; nwb build-react-component --no-demo --copy-files'
-    ],
-    {
-      // the important part is the 4th option 'ipc'
-      // this way `process.send` will be available in the child process (nodemon)
-      // so it can communicate back with parent process (through `.on()`, `.send()`)
-      // https://nodejs.org/api/child_process.html#child_process_options_stdio
-      stdio: ['pipe', 'pipe', 'pipe', 'ipc']
-    }
-  )
-
-  return cp
+async function startStyleguide(port) {
+  var app = spawnStyleguide()
 }
 
 /**
@@ -42,51 +29,34 @@ function spawnNodemon() {
  * @param {string}  type  The servers type
  */
 function startDev(type = 'default') {
-  var app = spawnNodemon()
-  // Generate a random port
-  const port = '600' + Math.floor(Math.random() * 9 + 1)
-  if (type === 'withStorybook') {
-    startStorybook(port)
-  }
-  app.on('message', function(event) {
-    if (event.type === 'boot') {
-      clearConsole()
-      type === 'withStorybook'
-        ? console.log(
-            chalk.cyan('Starting storybook and nodemon watcher...\u001b[39m')
-          )
-        : console.log(chalk.cyan('Starting nodemon watcher...\u001b[39m'))
-    } else if (event.type === 'config:update') {
-      console.log('Watching: ' + event.data.dirs[0])
-    } else if (event.type === 'start') {
-      console.log('⏳ Compiling...')
-    } else if (event.type === 'crash') {
-      console.log(chalk.red('Failed to compile. Waiting for changes...'))
-    } else if (event.type === 'restart') {
-      clearConsole()
-      console.log(chalk.yellow('Changes detected:'))
-      event.data.forEach(d => console.log('--> ' + d))
-    } else if (event.type === 'exit') {
-      clearConsole()
-      type === 'withStorybook'
-        ? console.log(
-            chalk.green('Compiled successfully! Waiting for changes...') +
-              '\n\n' +
-              '📕 Storybook running on ' +
-              'http://localhost:' +
-              chalk.bold(port) +
-              '/' +
-              '\n\n' +
-              'Please note that the output of the storyboard dev server is not logged. \nTo start a standalone storyboard server, use ' +
-              chalk.cyan('yarn run storybook') +
-              '.'
-          )
-        : console.log(
-            chalk.green('Compiled successfully! Waiting for changes...')
-          )
-    } else {
-      // console.log(event)
-    }
+  type === 'withStorybook'
+    ? console.log(
+        chalk.cyan('Starting styleguide and babel watcher...\u001b[39m')
+      )
+    : console.log(chalk.cyan('Starting babel watcher...\u001b[39m'))
+
+  // Spawn Babel server
+  process.env.NODE_ENV = 'development'
+  const opts = parseArgv([
+    process.argv[0],
+    process.argv[1],
+    '-w',
+    '--presets=react-app',
+    'src',
+    '--out-dir',
+    'es',
+    '--copy-files',
+    '--delete-dir-on-start',
+    '--ignore',
+    '__tests__,spec.js,test.js,__snapshots__'
+  ])
+  dirCommand(opts).catch(err => {
+    console.error(err)
+    process.exit(1)
   })
+  if (type === 'withStorybook') {
+    startStyleguide()
+  }
+  printDevServerInfo()
 }
 module.exports = {startDev}

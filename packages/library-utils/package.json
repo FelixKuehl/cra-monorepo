@@ -16,18 +16,21 @@
   },
   "scripts": {},
   "dependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "babel-plugin-eslint-disable": "^0.1.2",
+    "babel-preset-react-app": "^5.0.2",
     "chalk": "^2.4.1",
-    "nodemon": "^1.18.4"
+    "react-scripts": "^2.0.3",
+    "react-styleguidist": "^7.3.8",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
   },
   "peerDependencies": {
-    "css-loader": "1.x",
-    "nwb": "0.x",
-    "react": "16.x",
-    "sass-loader": "7.x",
-    "style-loader": "0.x"
+    "react": "16.x"
   },
-  "author": "",
-  "homepage": "",
+  "author": "Felix Kühl",
+  "homepage": "www.jobmatch.me",
   "license": "MIT",
   "repository": ""
 }

@@ -11,17 +11,10 @@
     "umd"
   ],
   "scripts": {
-    "build": "nwb build-react-component",
-    "build:lib": "yarn build  --copy-files --no-demo",
+    "build": "library-utils build",
     "build:watch": "library-utils build:watch",
-    "clean": "nwb clean-module && nwb clean-demo",
     "prepublishOnly": "npm run build",
-    "start": "library-utils start",
-    "test": "nwb test-react",
-    "test:coverage": "nwb test-react --coverage",
-    "test:watch": "nwb test-react --server",
-    "storybook": "start-storybook -c .storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "start": "library-utils start"
   },
   "peerDependencies": {
     "react": "16.x"
@@ -34,17 +27,6 @@
     "react-component"
   ],
   "devDependencies": {
-    "@storybook/addon-actions": "^3.4.11",
-    "@storybook/addon-knobs": "^3.4.11",
-    "@storybook/addon-links": "^3.4.11",
-    "@storybook/addons": "^3.4.11",
-    "@storybook/react": "^3.4.11",
-    "babel-core": "^6.26.3",
-    "babel-runtime": "^6.26.0",
-    "library-utils": "*",
-    "css-loader": "^1.0.0",
-    "resolve-url-loader": "^3.0.0",
-    "sass-loader": "^7.1.0",
-    "style-loader": "^0.23.0"
+    "library-utils": "*"
   }
 }
